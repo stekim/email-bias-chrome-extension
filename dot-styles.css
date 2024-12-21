@@ -1,0 +1,65 @@
+.bias-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-left: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.bias-dot.analyzing {
+    background-color: #88CCEE;
+    animation: pulse 2s infinite;
+}
+
+.bias-dot.neutral {
+    background-color: #0077BB;
+}
+
+.bias-dot.moderate {
+    background-color: #DDAA33;
+}
+
+.bias-dot.biased {
+    background-color: #EE7733;
+}
+
+.bias-dot.error {
+    background-color: #88CCEE;
+}
+
+.bias-dot:hover {
+    transform: scale(1.2);
+    filter: brightness(1.1);
+}
+
+.bias-dot .bias-tooltip {
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(0);
+    margin-bottom: 4px;
+    white-space: nowrap;
+    font-size: 11px;
+    padding: 4px 8px;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 4px;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.2s ease;
+}
+
+.bias-dot:hover .bias-tooltip {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) translateY(-4px);
+}
+
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}

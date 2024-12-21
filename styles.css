@@ -1,0 +1,322 @@
+/* Extension popup styles */
+:root {
+    --text-color: #202124;
+    --primary-color: #1a73e8;
+    --border-color: #dadce0;
+    --hover-color: #f8f9fa;
+    --meter-background: #f1f3f4;
+    --card-background: white;
+    --card-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Popup specific styles */
+.container {
+    width: 400px;
+    padding: 16px;
+}
+
+.header {
+    margin-bottom: 16px;
+}
+
+.header h1 {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0;
+}
+
+/* Category styles */
+.category {
+    margin: 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.category .label {
+    width: 120px;
+    font-size: 13px;
+    color: var(--text-color);
+    white-space: nowrap;
+}
+
+.meter-container {
+    position: relative;
+    width: 180px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.meter {
+    height: 4px;
+    width: 100%;
+    background: var(--meter-background);
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+}
+
+.meter::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: var(--meter-value);
+    background: var(--primary-color);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+/* Tick marks */
+.meter-tick-labels {
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--text-color);
+    opacity: 0.7;
+    margin-top: 4px;
+    text-transform: uppercase;
+}
+
+.meter-tick-labels span {
+    transform: translateX(-50%);
+    white-space: nowrap;
+}
+
+.meter-tick-labels span:first-child {
+    transform: translateX(0);
+}
+
+.meter-tick-labels span:last-child {
+    transform: translateX(-100%);
+}
+
+.meter-ticks {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    height: 12px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+    pointer-events: none;
+    transform: translateY(-50%);
+}
+
+.meter-tick {
+    width: 1px;
+    height: 8px;
+    background-color: rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.meter-value {
+    position: absolute;
+    right: -35px;
+    font-size: 11px;
+    color: var(--text-color);
+    opacity: 0.7;
+    white-space: nowrap;
+}
+
+/* Category groups */
+.category-group {
+    background: var(--card-background);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: var(--card-shadow);
+}
+
+.category-group h2 {
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0 0 12px 0;
+    color: var(--text-color);
+}
+
+/* Additional sections */
+.sender-info,
+.info-order {
+    background: var(--card-background);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 16px;
+    box-shadow: var(--card-shadow);
+}
+
+.sender-info h2,
+.info-order h2 {
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0 0 8px 0;
+}
+
+/* Error message */
+.error-message {
+    text-align: center;
+    padding: 24px;
+    color: var(--text-color);
+    background: var(--card-background);
+    border-radius: 8px;
+    box-shadow: var(--card-shadow);
+}
+
+/* Gmail toolbar button styles */
+.bias-toolbar-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    position: relative;
+}
+
+.bias-toolbar-button:hover {
+    background-color: rgba(32, 33, 36, 0.059);
+}
+
+.bias-toolbar-button img {
+    width: 20px;
+    height: 20px;
+    opacity: 0.7;
+}
+
+.bias-toolbar-button:hover img {
+    opacity: 1;
+}
+
+.bias-toolbar-button .bias-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(0);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    white-space: nowrap;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.2s ease;
+    pointer-events: none;
+    margin-bottom: 4px;
+}
+
+.bias-toolbar-button:hover .bias-tooltip {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) translateY(-4px);
+}
+
+/* Attention section styles */
+.attention-section {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #6c757d;
+}
+
+.attention-section h2 {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    color: #495057;
+}
+
+.attention-content {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #495057;
+    padding: 5px 0;
+}
+
+.attention-content.warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border-radius: 4px;
+    padding: 10px;
+    margin-top: 5px;
+}
+
+/* Debug Panel */
+.debug-panel {
+    margin-top: 20px;
+    border-top: 1px solid var(--border-color);
+    padding: 16px;
+    background: var(--card-background);
+    border-radius: 8px;
+    box-shadow: var(--card-shadow);
+}
+
+.debug-panel h3 {
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0 0 12px 0;
+    color: var(--text-color);
+}
+
+.debug-controls {
+    margin-bottom: 12px;
+    display: flex;
+    gap: 8px;
+}
+
+.debug-controls button {
+    padding: 6px 12px;
+    background-color: var(--hover-color);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--text-color);
+}
+
+.debug-controls button:hover {
+    background-color: var(--meter-background);
+}
+
+.debug-logs {
+    display: none;
+    max-height: 200px;
+    overflow-y: auto;
+    font-family: monospace;
+    font-size: 11px;
+    background: var(--meter-background);
+    border-radius: 4px;
+    padding: 8px;
+}
+
+.debug-logs.visible {
+    display: block;
+}
+
+.log-entry {
+    margin: 4px 0;
+    padding: 2px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.log-entry.error {
+    color: #d32f2f;
+}
+
+.log-entry.warning {
+    color: #f57c00;
+}
+
+.log-entry.info {
+    color: var(--primary-color);
+}
+
+.log-entry .timestamp {
+    color: var(--text-color);
+    opacity: 0.7;
+    margin-right: 8px;
+}
