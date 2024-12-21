@@ -34,7 +34,7 @@
     "128": "icons/icon128.png"
   },
   "web_accessible_resources": [{
-    "resources": ["config.js", "services/*"],
-    "matches": ["*://mail.google.com/*"]
+    "resources": ["config.js", "services/*", "*.js"],
+    "matches": ["<all_urls>"]
   }]
 }
