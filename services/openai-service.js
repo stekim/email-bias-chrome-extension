@@ -1,4 +1,4 @@
-// OpenAI service for email analysis
+// OpenAI service for email bias analysis
 const OPENAI_API_ENDPOINT = 'https://api.openai.com/v1/chat/completions';
 
 export class OpenAIService {
@@ -15,9 +15,7 @@ export class OpenAIService {
         console.log('🔄 Starting OpenAI analysis for email length:', emailContent.length);
         
         if (!emailContent) {
-            const error = new Error('No email content provided');
-            console.error('❌ Analysis Error:', error);
-            throw error;
+            throw new Error('No email content provided');
         }
 
         const prompt = `
@@ -25,22 +23,39 @@ export class OpenAIService {
             Return ONLY a JSON object with no markdown formatting or additional text.
             The JSON should have these aspects:
             
-            1. Credibility scores (0-1):
-               - deceptive: likelihood of deceptive content
-               - fakeNews: likelihood of fake news
-               - trustworthy: overall trustworthiness
-               - objective: level of objectivity
+            1. credibility:
+               - deceptive: likelihood of deceptive content (0-1)
+               - fakeNews: likelihood of misinformation (0-1)
+               - trustworthy: reliability of the source (0-1)
+               - objective: degree of objectivity in presentation (0-1)
             
-            2. Political bias scores (0-1):
-               - conservative: degree of conservative bias
-               - liberal: degree of liberal bias
+            2. politicalBias: a single score from -1 to 1 where:
+               * -1.0 means strongly left/liberal
+               * -0.5 means moderately left/liberal
+               * 0.0 means centrist/neutral
+               * 0.5 means moderately right/conservative
+               * 1.0 means strongly right/conservative
             
-            3. Structure analysis:
+            3. structureAnalysis:
                - format: "Simple", "Standard", or "Complex"
                - paragraphs: number of paragraphs
                - readability: "Low", "Medium", or "High"
             
-            Ensure all numerical scores are between 0 and 1.
+            Example response format:
+            {
+                "credibility": {
+                    "deceptive": 0.2,
+                    "fakeNews": 0.1,
+                    "trustworthy": 0.8,
+                    "objective": 0.7
+                },
+                "politicalBias": -0.3,
+                "structureAnalysis": {
+                    "format": "Standard",
+                    "paragraphs": 4,
+                    "readability": "High"
+                }
+            }
             
             Email content:
             ${emailContent}
@@ -54,7 +69,7 @@ export class OpenAIService {
                 messages: [
                     {
                         role: 'system',
-                        content: 'You are an expert at analyzing text for bias, credibility, and political leanings. Always respond with a raw JSON object containing numerical scores between 0 and 1. Do not include any markdown formatting or additional text in your response.'
+                        content: 'You are an expert at analyzing text for bias, credibility, and political leanings. Focus on evaluating source reliability and content objectivity. For political analysis, focus on providing a single score that accurately represents where the content falls on the political spectrum from left to right. Always respond with a raw JSON object matching the exact format requested. Do not include any markdown formatting or additional text in your response.'
                     },
                     {
                         role: 'user',
@@ -113,10 +128,10 @@ export class OpenAIService {
             const cleanedContent = content.replace(/```json\s*|\s*```/g, '').trim();
             console.log('🧹 Cleaned content:', cleanedContent);
 
-            const rawAnalysis = JSON.parse(cleanedContent);
-            console.log('📊 Raw analysis:', rawAnalysis);
+            const analysis = JSON.parse(cleanedContent);
+            console.log('📊 Analysis:', analysis);
 
-            return rawAnalysis;
+            return analysis;
 
         } catch (error) {
             console.error('❌ OpenAI API Error:', error);

@@ -62,7 +62,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 async function handleEmailAnalysis(emailData, sendResponse) {
     try {
         if (!openaiService) {
-            await initializeServices();
+            const initialized = await initializeServices();
+            if (!initialized) {
+                throw new Error('Failed to initialize OpenAI service');
+            }
         }
         
         if (!emailData) {
