@@ -2,6 +2,8 @@
 
 A Chrome extension that analyzes bias in Gmail messages using AI and reputation data.
 
+![screenshot of analysis](email bias analyzer.png)
+
 ## Features
 
 - Real-time analysis of email content for various types of bias
