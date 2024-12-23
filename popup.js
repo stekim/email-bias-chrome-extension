@@ -27,7 +27,12 @@ function showLoading() {
     const resultsDiv = document.getElementById('results');
     if (resultsDiv) {
         resultsDiv.className = 'loading-state';
-        resultsDiv.innerHTML = '<div class="loading">Analyzing email</div>';
+        resultsDiv.innerHTML = `
+            <div class="loading">Analyzing email</div>
+            <div class="progress-bar-container">
+                <div class="progress-bar"></div>
+            </div>
+        `;
         resultsDiv.style.display = 'block';
     }
 }
@@ -83,11 +88,13 @@ function displayAnalysis(data) {
                     <label>Trustworthy Source</label>
                     <div class="meter" style="width: ${trustworthyScore}%"></div>
                     <span>${trustworthyScore}%</span>
+                    <div class="reason">${data.credibility.trustworthyReason}</div>
                 </div>
                 <div class="meter-container">
                     <label>Objectivity</label>
                     <div class="meter" style="width: ${objectiveScore}%"></div>
                     <span>${objectiveScore}%</span>
+                    <div class="reason">${data.credibility.objectiveReason}</div>
                 </div>
             </div>
             

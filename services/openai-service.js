@@ -27,7 +27,9 @@ export class OpenAIService {
                - deceptive: likelihood of deceptive content (0-1)
                - fakeNews: likelihood of misinformation (0-1)
                - trustworthy: reliability of the source (0-1)
+               - trustworthyReason: less than 10 word reason for trustworthy score
                - objective: degree of objectivity in presentation (0-1)
+               - objectiveReason: less than 10 word reason for objective score
             
             2. politicalBias: a single score from -1 to 1 where:
                * -1.0 means strongly left/liberal
@@ -47,7 +49,9 @@ export class OpenAIService {
                     "deceptive": 0.2,
                     "fakeNews": 0.1,
                     "trustworthy": 0.8,
-                    "objective": 0.7
+                    "trustworthyReason": "Professional tone with verifiable company information",
+                    "objective": 0.7,
+                    "objectiveReason": "Presents balanced viewpoint with factual evidence"
                 },
                 "politicalBias": -0.3,
                 "structureAnalysis": {
@@ -69,7 +73,7 @@ export class OpenAIService {
                 messages: [
                     {
                         role: 'system',
-                        content: 'You are an expert at analyzing text for bias, credibility, and political leanings. Focus on evaluating source reliability and content objectivity. For political analysis, focus on providing a single score that accurately represents where the content falls on the political spectrum from left to right. Always respond with a raw JSON object matching the exact format requested. Do not include any markdown formatting or additional text in your response.'
+                        content: 'You are an expert at analyzing text for bias, credibility, and political leanings. Focus on evaluating source reliability and content objectivity. For political analysis, focus on providing a single score that accurately represents where the content falls on the political spectrum from left to right. Always respond with a raw JSON object matching the exact format requested. Do not include any markdown formatting or additional text in your response. Keep reason explanations clear and concise, under 10 words.'
                     },
                     {
                         role: 'user',
@@ -103,39 +107,28 @@ export class OpenAIService {
                 body: JSON.stringify(requestBody)
             });
 
-            const endTime = performance.now();
-            console.log(`⏱️ OpenAI API response time: ${(endTime - startTime).toFixed(2)}ms`);
-            console.log('📥 Received response status:', response.status);
-
             if (!response.ok) {
-                const errorText = await response.text();
-                console.error('❌ OpenAI API error response:', errorText);
-                throw new Error(`OpenAI API error: ${response.status} - ${errorText}`);
+                const errorData = await response.json();
+                throw new Error(`OpenAI API error: ${errorData.error?.message || response.statusText}`);
             }
 
             const data = await response.json();
-            console.log('🔍 Parsed API response:', data);
+            console.log('✅ OpenAI API response received in', Math.round(performance.now() - startTime), 'ms');
 
-            if (!data.choices?.[0]?.message?.content) {
-                console.error('❌ Invalid response format from OpenAI');
-                throw new Error('Invalid response format from OpenAI');
+            if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+                throw new Error('Invalid response format from OpenAI API');
             }
 
-            console.log('🔍 Parsing OpenAI response content...');
-            const content = data.choices[0].message.content;
-            
-            // Clean the response: remove markdown formatting if present
-            const cleanedContent = content.replace(/```json\s*|\s*```/g, '').trim();
-            console.log('🧹 Cleaned content:', cleanedContent);
-
-            const analysis = JSON.parse(cleanedContent);
-            console.log('📊 Analysis:', analysis);
-
-            return analysis;
+            try {
+                const analysis = JSON.parse(data.choices[0].message.content);
+                console.log('📊 Analysis results:', analysis);
+                return analysis;
+            } catch (error) {
+                throw new Error('Failed to parse OpenAI response as JSON');
+            }
 
         } catch (error) {
-            console.error('❌ OpenAI API Error:', error);
-            console.error('📜 Error stack:', error.stack);
+            console.error('❌ OpenAI API error:', error);
             throw error;
         }
     }
