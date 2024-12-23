@@ -31,26 +31,4 @@ A Chrome extension that analyzes bias in Gmail messages using AI and reputation 
    - Sender reputation
    - Information structure analysis
 
-## Development
 
-The extension consists of several key components:
-
-- `manifest.json`: Extension configuration
-- `content.js`: Gmail interface integration
-- `background.js`: Email analysis logic
-- `popup.html/js`: Analysis display UI
-- `styles.css`: Modern styling
-
-To modify the bias analysis logic, focus on the `BiasAnalyzer` class in `background.js`.
-
-## TODO
-
-- Integrate with a Natural Language Processing service for more accurate text analysis
-- Implement sender reputation database
-- Add user preferences for bias sensitivity
-- Improve source citation detection
-- Add export functionality for analysis results
-
-## License
-
-MIT
